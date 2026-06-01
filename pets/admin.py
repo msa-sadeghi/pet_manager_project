@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import Pet
 
+from django.urls import reverse
+
 
 @admin.register(Pet)
 class PetAdmin(admin.ModelAdmin):
@@ -16,6 +18,7 @@ class PetAdmin(admin.ModelAdmin):
         "is_neutered",
         "created_at",
         "photo_preview",
+        "owner_connection",
     )
     search_fields = (
         "owner__user__username",
@@ -45,3 +48,9 @@ class PetAdmin(admin.ModelAdmin):
         return "عکس"
 
     photo_preview.short_description = "عکس"
+
+    def owner_connection(self, obj):
+        url = reverse("owners:owner_detail", args=[obj.owner.pk])
+        return format_html(f"<a href={url}>link</a>")
+
+    owner_connection.short_decription = "اتصال"
