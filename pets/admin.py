@@ -50,7 +50,8 @@ class PetAdmin(admin.ModelAdmin):
     photo_preview.short_description = "عکس"
 
     def owner_connection(self, obj):
-        url = reverse("owners:owner_detail", args=[obj.owner.pk])
-        return format_html(f"<a href={url}>link</a>")
+        # url = reverse("owners:owner_detail", args=[obj.owner.pk])
+        url = reverse("admin:owners_owner_change", args=[obj.owner.pk])
+        return format_html("<a href={}>{}</a>", url, obj.owner)
 
-    owner_connection.short_decription = "اتصال"
+    owner_connection.short_description = "اتصال"
