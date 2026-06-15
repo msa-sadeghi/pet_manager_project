@@ -1,0 +1,38 @@
+[
+  {
+    "model": "pets.pet",
+    "pk": 3,
+    "fields": {
+      "owner": 1,
+      "name": "گربه",
+      "species": "cat",
+      "created_at":"2026-10-01",
+      "updated_at":"2026-10-01",
+      "breed": "پرشین",
+      "gender": "female",
+      "birth_date": "2021-03-15",
+      "weight": "4.22",
+      "color": "سفید",
+      "is_neutered": true,
+      "notes": "حساسیت به غذای خشک دارد"
+    }
+  },
+  {
+    "model": "pets.pet",
+    "pk": 4,
+    "fields": {
+      "owner": 1,
+      "name": "هاپو",
+      "species": "dog",
+      "created_at":"2026-10-01",
+      "updated_at":"2026-10-01",
+      "breed": "پرشین",
+      "gender": "female",
+      "birth_date": "2021-03-15",
+      "weight": "6.20",
+      "color": "سفید",
+      "is_neutered": true,
+      "notes": "حساسیت به غذای خشک دارد"
+    }
+  }
+]
