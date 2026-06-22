@@ -3,21 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
+    <title>login</title>
   </head>
   <body>
     <form method="POST">
       <div class="row">
         <div class="col-md-6 mb--3">
-          <label for="">name</label>
-          {{form.first_name}}
+          <label for="">username</label>
+          {{form.username}}
         </div>
 
-        <button>register</button>
-        <p>
-          are you registerd??
-          <a href="{% url 'accounts:login' %}">login</a>
-        </p>
+        <button>Login</button>
       </div>
     </form>
   </body>
