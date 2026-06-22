@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     "clinic",
     "owners",
     "pets.apps.PetsConfig",
+    "accounts.apps.AccountsConfig",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -140,3 +142,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+# LOGIN_URL = "accounts:login"
+# LOGIN_REDIRECT_URL = "pets:pet_list"
+# LOGOUT_REDIRECT_URL = "accounts:login"
