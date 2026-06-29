@@ -7,13 +7,42 @@
   </head>
   <body>
     <form method="POST">
+      {% csrf_token %}
       <div class="row">
+        <div class="col-md-6 mb--3">
+          <label for="">username</label>
+          {{form.username}}
+        </div>
         <div class="col-md-6 mb--3">
           <label for="">name</label>
           {{form.first_name}}
         </div>
+        <div class="col-md-6 mb--3">
+          <label for="">lastname</label>
+          {{form.last_name}}
+        </div>
+        <div class="col-md-6 mb--3">
+          <label for="">email</label>
+          {{form.email}}
+        </div>
+        <div class="col-md-6 mb--3">
+          <label for="">phone</label>
+          {{form.phone}}
+        </div>
+        <div class="col-md-6 mb--3">
+          <label for="">city</label>
+          {{form.city}}
+        </div>
+        <div class="col-md-6 mb--3">
+          <label for="">password</label>
+          {{form.password1}}
+        </div>
+        <div class="col-md-6 mb--3">
+          <label for="">repassword</label>
+          {{form.password2}}
+        </div>
 
-        <button>register</button>
+        <button type="submit">register</button>
         <p>
           are you registerd??
           <a href="{% url 'accounts:login' %}">login</a>

@@ -7,13 +7,17 @@
   </head>
   <body>
     <form method="POST">
+      {% csrf_token %}
       <div class="row">
         <div class="col-md-6 mb--3">
           <label for="">username</label>
           {{form.username}}
+          <br />
+          <label for="">password</label>
+          {{form.password}}
         </div>
 
-        <button>Login</button>
+        <button type="submit">Login</button>
       </div>
     </form>
   </body>

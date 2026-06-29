@@ -1,18 +1,9 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pets Info</title>
-  </head>
-  <body>
-    {% for pet in pets%}
-    <h1>{{pet.name}}</h1>
-    <label for="">breed : </label>
-    <span>{{pet.breed}}</span>
-    <label for="">owner : </label>
-    <span>{{pet.owner}}</span>
-    <img src="{{pet.photo}}" alt="" />
-    {% endfor %}
-  </body>
-</html>
+{% extends "./base.html" %} {% block title %}Pets Info{% endblock title %} 
+{% block body %} {% for pet in pets%}
+<h1>{{pet.name}}</h1>
+<label for="">breed : </label>
+<span>{{pet.breed}}</span>
+<label for="">owner : </label>
+<span>{{pet.owner}}</span>
+<img src="{{pet.photo}}" alt="" />
+{% endfor %} {% endblock body %}
