@@ -10,9 +10,11 @@ def register_view(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            print(form.errors)
+            
             user = form.save()
             login(request, user)
+        else:
+            print(form.errors)
     else:
         form = RegistrationForm()
     return render(request, "accounts/register.html", {"form": form})
