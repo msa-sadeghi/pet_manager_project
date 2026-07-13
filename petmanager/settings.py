@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "owners",
     "pets.apps.PetsConfig",
     "accounts.apps.AccountsConfig",
+    "blog",
 ]
 
 
