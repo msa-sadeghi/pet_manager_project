@@ -1,0 +1,17 @@
+{% extends "blog/base.html" %} {% block title %}contact us{% endblock title %}
+{% block content %}
+<form method="post">
+  {% csrf_token %} {% for field in form %}
+  <div>
+    {{field.label_tag}} {{field}} {% if field.errors %}
+    <ul>
+      {% for er in field.erros %}
+      <li>-{{er}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <button type="submit">send message</button>
+</form>
+{% endblock content %}
