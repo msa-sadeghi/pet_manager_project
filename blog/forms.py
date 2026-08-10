@@ -39,6 +39,9 @@ class PostForm(forms.ModelForm):
             "is_published": "منتشر شد؟",
         }
         widgets = {"title": forms.TextInput(attrs={"placeolder": "عنوان پست را وارد نمائید", "class": "form-control"})}
+
         def clean_title(self):
-            title = self.clean_data['title']
-            
+            title = self.clean_data["title"]
+            if len(title) < 5:
+                raise forms.ValidationError("عنوان باید حداقل 5 کاراکتر باشد")
+            return title.strip()
