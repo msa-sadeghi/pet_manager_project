@@ -5,6 +5,7 @@ from django.urls import reverse
 from .forms import ContactForm, PostForm
 from django.contrib.auth.decorators import login_required
 
+
 def home(request):
     return HttpResponse("hello world")
 
@@ -32,10 +33,11 @@ def contact(request):
         form = ContactForm()
     return render(request, "blog/contact.html", {"form": form})
 
+
 @login_required
 def post_create(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -44,6 +46,7 @@ def post_create(request):
     else:
         form = PostForm()
     return render(request, "blog/post_form.html", {"form": form, "action": "ساخت"})
+
 
 @login_required
 def post_update(request, pk):

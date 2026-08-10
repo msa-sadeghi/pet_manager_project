@@ -6,6 +6,9 @@
 {% block content %}
 <article>
   <h1>{{post.title}}</h1>
+  {% if post.image %}
+    <img src="{{post.image.url}}" alt="{{post.title}}">
+  {% endif %}
 </article>
 <a href="{% url "blog:post_list" %}">بازگشت به لیست</a>
 <a href={{path}}>test</a>

@@ -30,18 +30,19 @@ class ContactForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content", "is_published"]
+        fields = ["title", "content", "image", "is_published"]
         # fields = "__all__"
         exclude = ["created_at"]
         labels = {
             "title": "عنوان پست",
             "content": "محتوا",
+            "image": "تصویر",
             "is_published": "منتشر شد؟",
         }
         widgets = {"title": forms.TextInput(attrs={"placeolder": "عنوان پست را وارد نمائید", "class": "form-control"})}
 
-        def clean_title(self):
-            title = self.clean_data["title"]
-            if len(title) < 5:
-                raise forms.ValidationError("عنوان باید حداقل 5 کاراکتر باشد")
-            return title.strip()
+    def clean_title(self):
+        title = self.cleaned_data["title"]
+        if len(title) < 5:
+            raise forms.ValidationError("عنوان باید حداقل 5 کاراکتر باشد")
+        return title.strip()
