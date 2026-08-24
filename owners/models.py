@@ -13,12 +13,8 @@ class Owner(models.Model):
     phone = models.CharField(max_length=15, verbose_name="شماره تلفن")
     address = models.TextField(verbose_name="آدرس", blank=True)
     city = models.CharField(max_length=100, verbose_name="شهر", blank=True)
-    national_id = models.CharField(
-        max_length=10, verbose_name="کد ملی", unique=True, blank=True
-    )
-    profile_picture = models.ImageField(
-        upload_to="owners/", verbose_name="تصویر پروفایل", blank=True, null=True
-    )
+    national_id = models.CharField(max_length=10, verbose_name="کد ملی", unique=True, blank=True)
+    profile_picture = models.ImageField(upload_to="owners/", verbose_name="تصویر پروفایل", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت نام")
 
     class Meta:
@@ -28,3 +24,5 @@ class Owner(models.Model):
 
     def __str__(self):
         return f"{self.user.username} salaam"
+
+

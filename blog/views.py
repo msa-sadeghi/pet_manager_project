@@ -4,6 +4,8 @@ from .models import Post
 from django.urls import reverse
 from .forms import ContactForm, PostForm
 from django.contrib.auth.decorators import login_required
+from django.db import connection
+from django.db.models import Q
 
 
 def home(request):
@@ -11,7 +13,20 @@ def home(request):
 
 
 def post_list(request):
-    posts = Post.objects.filter(is_published=True).order_by("-created_at")
+    posts = (
+        Post.objects.select_related("author", "category")
+        .prefetch_related("tags")
+        .filter(Q(is_published=True) & (Q(title__icontains="پست") | Q(content__icontains="پست")))
+        .order_by("-created_at")
+    )
+
+    # posts = Post.objects.filter(is_published=True).order_by("-created_at")
+    for post in posts:
+        print(post.title)
+        print(post.author.username)
+        print(post.category.name)
+
+    print(len(connection.queries))
     context = {"posts": posts, "title": "لیست پست ها"}
     return render(request, "blog/post_list.html", context)
 

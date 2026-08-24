@@ -19,6 +19,9 @@ admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
 
+
+
+
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
     list_display = ["get_full_name", "phone", "city", "get_count"]

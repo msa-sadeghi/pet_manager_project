@@ -30,7 +30,14 @@ class ContactForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "content", "image", "is_published"]
+        fields = [
+            "title",
+            "content",
+            "image",
+            "is_published",
+            "category",
+            #   , "tags"
+        ]
         # fields = "__all__"
         exclude = ["created_at"]
         labels = {
@@ -38,8 +45,13 @@ class PostForm(forms.ModelForm):
             "content": "محتوا",
             "image": "تصویر",
             "is_published": "منتشر شد؟",
+            "category": "دسته",
+            # "tags": "تگ ها",
         }
-        widgets = {"title": forms.TextInput(attrs={"placeolder": "عنوان پست را وارد نمائید", "class": "form-control"})}
+        widgets = {
+            "title": forms.TextInput(attrs={"placeolder": "عنوان پست را وارد نمائید", "class": "form-control"}),
+            # "tags": forms.TextInput(attrs={"placeolder": "تگ های پست را وارد نمائید", "class": "form-control"}),
+        }
 
     def clean_title(self):
         title = self.cleaned_data["title"]
