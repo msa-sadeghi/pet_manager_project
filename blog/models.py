@@ -29,6 +29,7 @@ class Post(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_published = models.BooleanField(default=False)
     views = models.PositiveIntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -45,3 +46,8 @@ class PostTag(models.Model):
 
     class Meta:
         unique_together = ("post", "tag")
+
+
+class Comment(models.Model):
+    text = models.TextField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")

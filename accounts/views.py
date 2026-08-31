@@ -10,7 +10,7 @@ def register_view(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            
+
             user = form.save()
             login(request, user)
         else:
@@ -30,7 +30,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect("pets:pet_list")
+            return redirect("blog:post_list")
     else:
         form = AuthenticationForm()
     return render(request, "accounts/login.html", {"form": form})

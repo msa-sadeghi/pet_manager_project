@@ -4,7 +4,7 @@ from .models import Post, Tag, Category
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("title", "price", "is_published", "created_at")
+    list_display = ("title", "price", "views", "likes", "is_published", "created_at")
     list_filter = ("is_published",)
     search_fields = ("title", "content")
 

@@ -5,7 +5,7 @@ from django.urls import reverse
 from .forms import ContactForm, PostForm
 from django.contrib.auth.decorators import login_required
 from django.db import connection
-from django.db.models import Q
+from django.db.models import Q, F
 
 
 def home(request):
@@ -33,6 +33,8 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, id=pk)
+    Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
+    post.refresh_from_db()
     return render(request, "blog/blog_detail.html", {"post": post, "path": reverse("blog:post_detail", args=[post.pk])})
 
 
