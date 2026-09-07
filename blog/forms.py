@@ -58,3 +58,7 @@ class PostForm(forms.ModelForm):
         if len(title) < 5:
             raise forms.ValidationError("عنوان باید حداقل 5 کاراکتر باشد")
         return title.strip()
+
+
+class CommentForm(forms.ModelForm):
+    pass

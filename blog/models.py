@@ -51,3 +51,6 @@ class PostTag(models.Model):
 class Comment(models.Model):
     text = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="comments")
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)

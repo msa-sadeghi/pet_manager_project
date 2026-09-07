@@ -14,10 +14,12 @@
           <a href="{% url "blog:post_detail" post.id %}">{{post.title}}</a>
         </h2>
         <p>{{post.content|truncatechars:150}}</p>
+        <p>comments : {{post.comment_count}}</p>
         <small>{{post.created_at|date:'Y/m/d'}}</small>
       </article>
       <hr>
-    {% endfor %}
+      {% endfor %}
+      <p>post counts : {{post_counts}}</p>
   {% else %}
       <p>هیچ  پسنی موجود  نیست</p>
   {% endif %}
