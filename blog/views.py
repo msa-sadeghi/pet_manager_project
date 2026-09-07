@@ -6,28 +6,35 @@ from .forms import ContactForm, PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Q, F, Count
+from django.views.generic import ListView
 
 
 def home(request):
     return HttpResponse("hello world")
 
 
-def post_list(request):
-    posts = (
-        Post.objects.select_related("author", "category")
-        .prefetch_related("tags")
-        .filter(Q(is_published=True) & (Q(title__icontains="پست") | Q(content__icontains="پست")))
-        .annotate(comment_count=Count("comments"))
-        .order_by("-created_at")
-    )
-    post_counts = Post.objects.aggregate(post_counts=Count("id"))
-    print(post_counts)
-    # posts = Post.objects.filter(is_published=True).order_by("-created_at")
-    for post in posts:
-        print(post.comment_count)
+# def post_list(request):
+#     posts = (
+#         Post.objects.select_related("author", "category")
+#         .prefetch_related("tags")
+#         .filter(Q(is_published=True) & (Q(title__icontains="پست") | Q(content__icontains="پست")))
+#         .annotate(comment_count=Count("comments"))
+#         .order_by("-created_at")
+#     )
+#     post_counts = Post.objects.aggregate(post_counts=Count("id"))
+#     print(post_counts)
+#     # posts = Post.objects.filter(is_published=True).order_by("-created_at")
+#     for post in posts:
+#         print(post.comment_count)
 
-    context = {"posts": posts, "title": "لیست پست ها", "post_counts": post_counts["post_counts"]}
-    return render(request, "blog/post_list.html", context)
+#     context = {"posts": posts, "title": "لیست پست ها", "post_counts": post_counts["post_counts"]}
+#     return render(request, "blog/post_list.html", context)
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "posts"
 
 
 def post_detail(request, pk):
@@ -37,7 +44,6 @@ def post_detail(request, pk):
     comment_form = CommentForm()
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
-        
 
     post.refresh_from_db()
     context = {

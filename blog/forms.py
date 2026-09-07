@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 
 class ContactForm(forms.Form):
@@ -61,4 +61,6 @@ class PostForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    pass
+    class Meta:
+        model = Comment
+        fields = "__all__"
