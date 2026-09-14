@@ -6,7 +6,8 @@ from .forms import ContactForm, PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Q, F, Count
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse_lazy
 
 
 def home(request):
@@ -83,46 +84,64 @@ def contact(request):
     return render(request, "blog/contact.html", {"form": form})
 
 
-@login_required
-def post_create(request):
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect("blog:post_list")
-    else:
-        form = PostForm()
-    return render(request, "blog/post_form.html", {"form": form, "action": "ساخت"})
+# @login_required
+# def post_create(request):
+#     if request.method == "POST":
+#         form = PostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user
+#             post.save()
+#             return redirect("blog:post_list")
+#     else:
+#         form = PostForm()
+#     return render(request, "blog/post_form.html", {"form": form, "action": "ساخت"})
 
 
-# class PostCreateView(CreateView):
-#     model = Post
-#     fields = [
-#         "title",
-#         "content",
-#         "image",
-#         "is_published",
-#         "category",
-#     ]
-#     template_name = "blog/post_form.html"
+class PostCreateView(CreateView):
+    model = Post
+    fields = [
+        "title",
+        "content",
+        "image",
+        "is_published",
+        "category",
+    ]
+    template_name = "blog/post_form.html"
+    success_url = reverse_lazy("blog:post_list")
 
-#     def form_valid(self, form):
-#         form.instance.author = self.request.user
-#         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action"] = "ساخت"
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
-@login_required
-def post_update(request, pk):
-    post = get_object_or_404(Post, pk=pk, author=request.user)
-    if request.method == "POST":
+# @login_required
+# def post_update(request, pk):
+#     post = get_object_or_404(Post, pk=pk, author=request.user)
+#     if request.method == "POST":
 
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            form.save()
-            return redirect("blog:post_detail", pk=post.pk)
-    else:
-        form = PostForm(instance=post)
+#         form = PostForm(request.POST, instance=post)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("blog:post_detail", pk=post.pk)
+#     else:
+#         form = PostForm(instance=post)
 
-    return render(request, "blog/post_form.html", {"form": form, "action": "ویرایش"})
+#     return render(request, "blog/post_form.html", {"form": form, "action": "ویرایش"})
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = "blog/post_form.html"
+    fields = [
+        "title",
+        "content",
+        "image",
+        "is_published",
+        "category",
+    ]
