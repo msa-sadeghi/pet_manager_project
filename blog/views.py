@@ -6,7 +6,7 @@ from .forms import ContactForm, PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Q, F, Count
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, CreateView
 
 
 def home(request):
@@ -35,25 +35,39 @@ class PostListView(ListView):
     model = Post
     template_name = "blog/post_list.html"
     context_object_name = "posts"
+    paginate_by = 10
+
+    def get_queryset(self):
+        qs = Post.objects.filter(is_published=True)
+        q = self.request.GET.get("q")
+        if q:
+            qs = qs.filter(title__icontains=q)
+        return qs
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
-    comments = post.comments.filter(is_approved=True)
-    comment_form = CommentForm()
-    if request.method == "POST":
-        comment_form = CommentForm(request.POST)
+# def post_detail(request, pk):
+#     post = get_object_or_404(Post, id=pk)
+#     Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
+#     comments = post.comments.filter(is_approved=True)
+#     comment_form = CommentForm()
+#     if request.method == "POST":
+#         comment_form = CommentForm(request.POST)
 
-    post.refresh_from_db()
-    context = {
-        "post": post,
-        "comments": comments,
-        "comment_form": comment_form,
-        "path": reverse("blog:post_detail", args=[post.pk]),
-    }
+#     post.refresh_from_db()
+#     context = {
+#         "post": post,
+#         "comments": comments,
+#         "comment_form": comment_form,
+#         "path": reverse("blog:post_detail", args=[post.pk]),
+#     }
 
-    return render(request, "blog/blog_detail.html", context=context)
+#     return render(request, "blog/blog_detail.html", context=context)
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/blog_detail.html"
+    context_object_name = "post"
 
 
 def contact(request):
@@ -81,6 +95,22 @@ def post_create(request):
     else:
         form = PostForm()
     return render(request, "blog/post_form.html", {"form": form, "action": "ساخت"})
+
+
+# class PostCreateView(CreateView):
+#     model = Post
+#     fields = [
+#         "title",
+#         "content",
+#         "image",
+#         "is_published",
+#         "category",
+#     ]
+#     template_name = "blog/post_form.html"
+
+#     def form_valid(self, form):
+#         form.instance.author = self.request.user
+#         return super().form_valid(form)
 
 
 @login_required

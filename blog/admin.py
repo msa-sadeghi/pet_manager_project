@@ -7,6 +7,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "price", "views", "likes", "is_published", "created_at")
     list_filter = ("is_published",)
     search_fields = ("title", "content")
+    list_editable = ("is_published",)
 
 
 @admin.register(Tag)
