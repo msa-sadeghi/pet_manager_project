@@ -10,6 +10,7 @@
     <img src="{{post.image.url}}" alt="{{post.title}}">
   {% endif %}
 </article>
+<a href="{% url "blog:post_update" post.id %}"> ویرایش </a>
 <a href="{% url "blog:post_list" %}">بازگشت به لیست</a>
 <a href={{path}}>test</a>
 <p>{{path}}</p>

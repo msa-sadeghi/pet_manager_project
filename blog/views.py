@@ -8,6 +8,7 @@ from django.db import connection
 from django.db.models import Q, F, Count
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def home(request):
@@ -46,6 +47,7 @@ class PostListView(ListView):
         return qs
 
 
+# @login_required
 # def post_detail(request, pk):
 #     post = get_object_or_404(Post, id=pk)
 #     Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
@@ -135,13 +137,23 @@ class PostCreateView(CreateView):
 #     return render(request, "blog/post_form.html", {"form": form, "action": "ویرایش"})
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = "blog/post_form.html"
-    fields = [
-        "title",
-        "content",
-        "image",
-        "is_published",
-        "category",
-    ]
+    # fields = [
+    #     "title",
+    #     "content",
+    #     "image",
+    #     "is_published",
+    #     "category",
+    # ]
+    form_class = PostForm
+
+    def get_success_url(self):
+        return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        if post.author != self.request.user:
+            raise PermissionError
+        return post
