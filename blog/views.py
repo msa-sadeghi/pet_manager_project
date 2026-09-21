@@ -6,9 +6,9 @@ from .forms import ContactForm, PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Q, F, Count
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 def home(request):
@@ -100,7 +100,7 @@ def contact(request):
 #     return render(request, "blog/post_form.html", {"form": form, "action": "ساخت"})
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = [
         "title",
@@ -111,6 +111,8 @@ class PostCreateView(CreateView):
     ]
     template_name = "blog/post_form.html"
     success_url = reverse_lazy("blog:post_list")
+    login_url = "/accounts/login/"
+    redirect_field_name = "return_to"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -137,7 +139,7 @@ class PostCreateView(CreateView):
 #     return render(request, "blog/post_form.html", {"form": form, "action": "ویرایش"})
 
 
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     template_name = "blog/post_form.html"
     # fields = [
@@ -148,9 +150,26 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     #     "category",
     # ]
     form_class = PostForm
+    redirect_field_name = "next"
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
     def get_success_url(self):
         return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        if post.author != self.request.user:
+            raise PermissionError
+        return post
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = "blog/post_confirm_delete.html"
+    success_url = reverse_lazy("blog:post_list")
 
     def get_object(self, queryset=None):
         post = super().get_object(queryset)
