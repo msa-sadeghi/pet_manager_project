@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import RegistrationForm, UserUpdateForm, OwnerUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 
 def register_view(request):
@@ -42,3 +43,10 @@ def logout_view(request):
         logout(request)
 
     return redirect("accounts:login")
+
+
+@login_required
+def profile_view(request):
+    users_posts = request.user.posts.all().order_by("-created_at")
+    context = {"user": request.user, "posts": users_posts, "post_counts": users_posts.count()}
+    return render(request, "accounts/profile.html", context)

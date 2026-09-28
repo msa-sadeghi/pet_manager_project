@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <h2>{{user.username}}</h2>
+    {% for post in posts %}
+    <h3>{{post.title}}</h3>
+    {% endfor %}
+    <form action="{% url 'accounts:logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+    {% endif %}
+  </body>
+</html>
