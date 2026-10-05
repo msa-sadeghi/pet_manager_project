@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
+
 from .models import Owner
 
 
@@ -15,11 +16,11 @@ class CustomUserAdmin(UserAdmin):
     inlines = [OwnerInline]
 
 
-admin.site.unregister(User)
+try:
+    admin.site.unregister(User)
+except:
+    pass
 admin.site.register(User, CustomUserAdmin)
-
-
-
 
 
 @admin.register(Owner)
