@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm, UserUpdateForm, OwnerUpdateForm
+from .forms import RegistrationForm, UserUpdateForm, OwnerUpdateForm, ProfileUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -50,3 +50,15 @@ def profile_view(request):
     users_posts = request.user.posts.all().order_by("-created_at")
     context = {"user": request.user, "posts": users_posts, "post_counts": users_posts.count()}
     return render(request, "accounts/profile.html", context)
+
+
+@login_required
+def profile_edit_view(request):
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("accounts:profile")
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+    return render(request, "accounts/profile_edit.html", {"form": form})

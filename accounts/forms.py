@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from .models import CustomUser
 
 from django.contrib.auth.forms import UserCreationForm
 from owners.models import Owner
@@ -28,13 +28,13 @@ class RegistrationForm(UserCreationForm):
     )
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
-        models = User
+        models = CustomUser
         fields = ["first_name", "last_name", "email"]
 
 
@@ -42,3 +42,14 @@ class OwnerUpdateForm(forms.ModelForm):
     class Meta:
         models = Owner
         fields = ["phone", "city", "address"]
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ("first_name", "last_name", "email", "bio", "avatar", "website", "phone", "birth_date")
+        labels = {
+            "first_name": "نام",
+            "last_name": "نام خانوادگی",
+        }
+        widgets = {"bio": forms.Textarea(attrs={"rows": 4}), "birth_date": forms.DateInput(attrs={"type": "date"})}

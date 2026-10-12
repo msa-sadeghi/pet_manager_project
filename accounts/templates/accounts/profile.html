@@ -11,6 +11,7 @@
     {% for post in posts %}
     <h3>{{post.title}}</h3>
     {% endfor %}
+    <a href="{% url 'accounts:profile_edit' %}">edit profile</a>
     <form action="{% url 'accounts:logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Logout</button>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form method="post">
+      {% if request.user.avatar %}
+
+      <img src="{{request.user.avatar.url}}" alt="" />
+      {% endif %} {% csrf_token %} {{form}}
+
+      <button type="submit">update</button>
+      <a href="{% url 'accounts:profile' %}">cancel</a>
+    </form>
+  </body>
+</html>
