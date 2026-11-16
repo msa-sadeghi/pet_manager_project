@@ -50,6 +50,11 @@ class Category(models.Model):
 isbn_validator = RegexValidator(regex=r"^\d{13}$", message="ISBN must be 13 digits")
 
 
+class AvailableBookManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True, available_copies__gt=0)
+
+
 class Book(models.Model):
     class Language(models.TextChoices):
         PERSIAN = "fa", "فارسی"
@@ -64,7 +69,7 @@ class Book(models.Model):
     description = models.TextField("توضیحات", blank=True)
     authors = models.ManyToManyField(Author, related_name="books", verbose_name="نویسندگان")
     publisher = models.ForeignKey(Publisher, on_delete=models.PROTECT, related_name="books", verbose_name="ناشر")
-    Category = models.ForeignKey(
+    category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="books", verbose_name="دسته بندی"
     )
     published_year = models.PositiveSmallIntegerField(
@@ -78,6 +83,8 @@ class Book(models.Model):
     is_active = models.BooleanField("فعال", default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
+    available = AvailableBookManager()
 
     class Meta:
         ordering = ["title"]

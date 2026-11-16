@@ -1,0 +1,18 @@
+<div class="card book-card h-100">
+  <div class="card-body">
+    <h3 class="h6 card-title">
+      <a href="{{ book.get_absolute_url }}" class="text-decoration-none">
+        {{ book.title|truncatechars:40 }}
+      </a>
+    </h3>
+    <p class="mb-1 small text-muted">
+      {{ book.authors.all|join:'، ' }} | {{ book.published_year }}
+    </p>
+    {% if show_description %}
+      <p class="small">{{ book.description|default:'بدون توضیح'|truncatewords:12 }}</p>
+    {% endif %}
+    <span class="badge {% if book.available_copies > 0 %}badge-available{% else %}badge-unavailable{% endif %}">
+      {{ book|availability }}
+    </span>
+  </div>
+</div>

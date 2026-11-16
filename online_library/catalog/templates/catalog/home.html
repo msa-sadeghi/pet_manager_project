@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}خانه | کتابخانه‌ی آنلاین{% endblock %}
+
+{% block content %}
+  <div class="p-4 mb-4 bg-white rounded border">
+    <h1 class="h3">به کتابخانه‌ی آنلاین خوش آمدید</h1>
+    <p class="text-muted mb-0">
+      {{ book_count }} کتاب، {{ author_count }} نویسنده و {{ category_count }} دسته‌بندی
+    </p>
+  </div>
+
+  <h2 class="h5 mb-3">تازه‌ترین کتاب‌های موجود</h2>
+  <div class="row g-3">
+    {% for b in latest_books %}
+      <div class="col-md-4">
+        {% include 'catalog/_book_card.html' with book=b show_description=True %}
+      </div>
+    {% empty %}
+      <p>هنوز کتابی ثبت نشده است.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
