@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load catalog_extras %}
+
+{% block title %}{{ page_title|default:'کتاب‌ها' }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <aside class="col-md-3 mb-3">
+    {% category_menu %}
+  </aside>
+
+  <section class="col-md-9">
+    <h1 class="h4 mb-3">{{ page_title|default:'همه‌ی کتاب‌ها' }}</h1>
+
+    <form method="get" class="row g-2 mb-3">
+      <div class="col-md-6">
+        <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="عنوان کتاب">
+      </div>
+      <div class="col-md-4">
+        <select name="lang" class="form-select">
+          <option value="">همه‌ی زبان‌ها</option>
+          {% for code, label in languages %}
+            <option value="{{ code }}" {% if code == current_lang %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2"><button class="btn btn-primary w-100">فیلتر</button></div>
+    </form>
+
+    <p class="text-muted small">{{ books|length }} کتاب پیدا شد</p>
+    <div class="row g-3">
+      {% for b in books %}
+        <div class="col-md-6">{% include 'catalog/_book_card.html' with book=b %}</div>
+      {% empty %}
+        <p>کتابی با این مشخصات پیدا نشد.</p>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}
+
